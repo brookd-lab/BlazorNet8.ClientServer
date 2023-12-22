@@ -1,0 +1,60 @@
+﻿@page "/employees/get"
+@inject EmployeeService service; 
+@inject EmployeeRepository repo;
+@inject NavigationManager navigate;
+@attribute [StreamRendering(false)]
+@rendermode InteractiveServer
+
+<h3>Employee Data</h3>
+
+<button class="btn btn-primary" @onclick="CreateEmployee">Create Employee</button>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p> 
+}
+else
+{
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in employees)
+            {
+                <tr>
+                    <td>@emp.Name</td>
+                    <td>@emp.Salary</td>
+                    <td>
+                        <a href='/employees/update/@emp.Id'>Edit</a>  |
+                        <a href='/employees/delete/@emp.Id'>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Employee>? employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // http.BaseAddress = new Uri("https://localhost:7172");
+        // var response = await http.GetAsync("https://localhost:7172/employees");
+        // response.EnsureSuccessStatusCode();
+        // employees = await response.Content.ReadFromJsonAsync<List<Employee>>();
+
+        employees = await service.GetEmployees();
+        //employees = await repo.GetAll();
+    }
+
+    void CreateEmployee()
+    {
+        navigate.NavigateTo("/employee/create");
+    }
+}

@@ -1,0 +1,52 @@
+﻿@page "/employees/update/{Id:int}"
+@inject EmployeeService service;
+@inject EmployeeRepository repo;
+@inject NavigationManager navigate;
+@rendermode InteractiveServer
+
+<h3>Update Employee</h3>
+<h1 class="page-title">Details for @employee.Name</h1>
+<EditForm Model="@employee" OnValidSubmit="SaveEmployee">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <div class="col-md-4">
+            <InputText class="form-control" @bind-Value="employee.Name" />
+        </div>
+        <ValidationMessage For="@(() => employee.Name)" />
+    </div>
+    <div class="mb-3">
+        <label for="Salary" class="form-label">Salary</label>
+        <div class="col-md-4">
+            <input class="form-control" @bind="employee.Salary" />
+        </div>
+        <ValidationMessage For="@(() => employee.Salary)" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-light" @onclick="Cancel">Cancel</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    Employee employee = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        employee = await repo.GetById(Id);
+    }
+
+    async Task SaveEmployee()
+    {
+        await service.UpdateEmployee(employee);
+        //await repo.Update(employee);
+        navigate.NavigateTo("/employees/get");
+    }
+
+    public void Cancel()
+    {
+        navigate.NavigateTo("/employees/get");
+    }
+}

@@ -1,0 +1,53 @@
+﻿@page "/employees/delete/{Id:int}"
+@inject EmployeeService service;
+@inject EmployeeRepository repo;
+@inject NavigationManager navigate;
+@rendermode InteractiveServer
+
+<h3>Delete Employee</h3>
+<p>Are you sure you want to delete this Employee: <b>@employee.Name</b></p>
+<EditForm Model="@employee">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <div class="col-md-4">
+            <input class="form-control" @bind="employee.Name" readonly />
+        </div>
+        <ValidationMessage For="@(() => employee.Name)" />
+    </div>
+    <div class="mb-3">
+        <label for="Salary" class="form-label">Salary</label>
+        <div class="col-md-4">
+            <input class="form-control" @bind="employee.Salary" readonly/>
+        </div>
+        <ValidationMessage For="@(() => employee.Salary)" />
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" @onclick="@ConfirmDelete">Confirm Delete</button>
+        <button class="btn btn-light" @onclick="@Cancel">Cancel</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    Employee employee = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        employee = await repo.GetById(Id);
+    }
+
+    async Task ConfirmDelete()
+    {
+        await service.DeleteEmployee(Id);
+        //await repo.DeleteByID(Id);
+        navigate.NavigateTo("/employees/get");
+    }
+
+    public void Cancel()
+    {
+        navigate.NavigateTo("/employees/get");
+    }
+}
+

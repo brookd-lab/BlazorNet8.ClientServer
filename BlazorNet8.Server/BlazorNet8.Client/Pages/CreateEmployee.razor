@@ -1,0 +1,31 @@
+﻿@page "/employee/create"
+@inject EmployeeService service;
+@inject EmployeeRepository repo
+@inject NavigationManager navigate;
+@rendermode InteractiveServer
+
+<h3>Create Employee</h3>
+
+<EditForm Model="@employee" OnSubmit="CreateTheEmployee">
+    <label>Name</label>
+    <InputText @bind-Value="employee.Name"></InputText>
+    <br />
+    <label>Salary</label>
+    <input @bind="EmployeeSalary" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+
+@code {
+    Employee employee = new();
+    private decimal? EmployeeSalary { get; set; }
+
+    async Task CreateTheEmployee()
+    {
+        employee.Salary = EmployeeSalary;
+        await service.CreateEmployee(employee);
+        //await repo.Create(employee);
+        navigate.NavigateTo("/employees/get");
+    }
+
+}
