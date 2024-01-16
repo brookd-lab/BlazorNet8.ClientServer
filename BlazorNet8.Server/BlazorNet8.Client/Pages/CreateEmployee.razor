@@ -7,12 +7,29 @@
 <h3>Create Employee</h3>
 
 <EditForm Model="@employee" OnSubmit="CreateTheEmployee">
-    <label>Name</label>
+@*     <label>Name</label>
     <InputText @bind-Value="employee.Name"></InputText>
     <br />
     <label>Salary</label>
     <input @bind="EmployeeSalary" />
+    <button type="submit" class="btn btn-primary">Submit</button> *@
+
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <div class="col-md-4">
+            <input class="form-control" @bind="employee.Name"  />
+        </div>
+        <ValidationMessage For="@(() => employee.Name)" />
+    </div>
+    <div class="mb-3">
+        <label for="Salary" class="form-label">Salary</label>
+        <div class="col-md-4">
+            <input class="form-control" @bind="EmployeeSalary"  />
+        </div>
+        <ValidationMessage For="@(() => employee.Salary)" />
+    </div>
     <button type="submit" class="btn btn-primary">Submit</button>
+
 </EditForm>
 
 
