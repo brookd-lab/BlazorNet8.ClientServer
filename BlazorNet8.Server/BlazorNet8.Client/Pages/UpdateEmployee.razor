@@ -4,8 +4,10 @@
 @inject NavigationManager navigate;
 @rendermode InteractiveServer
 
-<h3>Update Employee</h3>
-<h1 class="page-title">Details for @employee.Name</h1>
+<h3 class="text-primary">Update Employee</h3>
+@* 
+<h3>Delete Employee</h3>
+<p>Are you sure you want to delete this Employee: <b>@employee.Name</b></p> *@
 <EditForm Model="@employee" OnValidSubmit="SaveEmployee">
     <DataAnnotationsValidator />
     <div class="mb-3">
@@ -23,8 +25,8 @@
         <ValidationMessage For="@(() => employee.Salary)" />
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button class="btn btn-light" @onclick="Cancel">Cancel</button>
+        <button type="submit" class="btn btn-info">Save</button>
+        <button class="btn btn-success" @onclick="Cancel">Cancel</button>
     </div>
 </EditForm>
 

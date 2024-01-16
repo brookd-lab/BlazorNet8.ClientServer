@@ -4,7 +4,7 @@
 @inject NavigationManager navigate;
 @rendermode InteractiveServer
 
-<h3>Create Employee</h3>
+<h3 class="text-primary">Create Employee</h3>
 
 <EditForm Model="@employee" OnSubmit="CreateTheEmployee">
 @*     <label>Name</label>
@@ -28,7 +28,13 @@
         </div>
         <ValidationMessage For="@(() => employee.Salary)" />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    @* <button type="submit" class="btn btn-primary">Submit</button> *@
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button class="btn btn-success" @onclick="@Cancel">Cancel</button>
+    </div>
+
 
 </EditForm>
 
@@ -42,6 +48,11 @@
         employee.Salary = EmployeeSalary;
         await service.CreateEmployee(employee);
         //await repo.Create(employee);
+        navigate.NavigateTo("/employees/get");
+    }
+
+    void Cancel()
+    {
         navigate.NavigateTo("/employees/get");
     }
 
